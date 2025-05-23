@@ -1,0 +1,12 @@
+{{ template "base.html" . }}
+
+{{ define "content" }}
+    <h1>Trello OAuth Success!</h1>
+    <p>You have successfully connected to Trello. Your access token information:</p>
+    <div class="token-info">
+        <p><strong>Access Token:</strong> {{ .AccessToken }}</p>
+        <p><strong>Access Secret:</strong> {{ .AccessSecret }}</p>
+    </div>
+    <p>You can now use these tokens to make API calls to Trello on behalf of the user.</p>
+    <a href="/logout">Logout</a>
+{{ end }}
