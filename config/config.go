@@ -8,14 +8,10 @@ import (
 const (
 	TrelloKey       = "a2f217e66e60163384df3e891fd329a8"
 	TrelloSecret    = "904e785848d1994523d17337b16a4473da7a9747690587d76f1b78e1dfa3779f"
-	CallbackURL     = "http://localhost:5001/callback"
+	CallbackURL     = "http://127.0.0.1:5001/callback"
 	RequestTokenURL = "https://trello.com/1/OAuthGetRequestToken"
 	AuthorizeURL    = "https://trello.com/1/OAuthAuthorizeToken"
 	AccessTokenURL  = "https://trello.com/1/OAuthGetAccessToken"
-	
-	// Mistral AI API configuration
-	MistralAPIKey   = "7dCau6emJZvQGkHdzsrfEKmkjbrVxX1J"
-	MistralAPIURL   = "https://api.mistral.ai/v1"
 )
 
 // Store will hold all session data
