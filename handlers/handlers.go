@@ -21,7 +21,7 @@ func InitTemplates() {
 	baseTemplate := filepath.Join("templates", "base.html")
 	
 	// Parse each template with the base template
-	templateFiles := []string{"home.html", "dashboard.html"}
+	templateFiles := []string{"home.html", "dashboard.html", "reports.html", "view_report.html"}
 	for _, file := range templateFiles {
 		templatePath := filepath.Join("templates", file)
 		tmpl, err := template.ParseFiles(baseTemplate, templatePath)

@@ -17,6 +17,9 @@ func main() {
 	// Initialize templates
 	handlers.InitTemplates()
 	
+	// Initialize the reporting agent
+	handlers.InitAgent()
+	
 	// Set up routes
 	r := routes.SetupRoutes()
 	

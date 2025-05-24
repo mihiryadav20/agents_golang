@@ -46,6 +46,9 @@
                 {{ range .Boards }}
                     <li>
                         <a href="{{ .url }}" target="_blank">{{ .name }}</a>
+                        <span style="margin-left: 15px;">
+                            <a href="/reports?board_id={{ .id }}" style="color: #999; font-size: 0.9em;">View Reports</a>
+                        </span>
                     </li>
                 {{ end }}
             </ul>

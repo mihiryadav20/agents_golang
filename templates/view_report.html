@@ -1,0 +1,88 @@
+{{ template "base.html" . }}
+
+{{ define "content" }}
+    <style>
+        .report-container {
+            margin-top: 20px;
+        }
+        .report-header {
+            margin-bottom: 30px;
+        }
+        .report-meta {
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        .report-meta p {
+            margin: 5px 0;
+        }
+        .report-content {
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .report-content h1, 
+        .report-content h2, 
+        .report-content h3 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #0079BF;
+        }
+        .report-content ul, 
+        .report-content ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .report-content p {
+            margin-bottom: 15px;
+        }
+        .report-content blockquote {
+            border-left: 4px solid #0079BF;
+            padding-left: 15px;
+            margin-left: 0;
+            color: #555;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #999;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .report-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .report-badge.weekly {
+            background-color: #61BD4F;
+            color: white;
+        }
+        .report-badge.monthly {
+            background-color: #F2D600;
+            color: #333;
+        }
+    </style>
+
+    <a href="/reports?board_id={{ .Report.BoardID }}" class="back-link">← Back to Reports</a>
+    
+    <div class="report-header">
+        <h1>
+            <span class="report-badge {{ .Report.Type }}">{{ .Report.Type }}</span>
+            {{ .Report.BoardName }} Report
+        </h1>
+    </div>
+    
+    <div class="report-meta">
+        <p><strong>Generated:</strong> {{ .Report.GeneratedAt.Format "January 2, 2006 at 3:04 PM" }}</p>
+        <p><strong>Period:</strong> {{ .Report.StartDate.Format "Jan 2, 2006" }} to {{ .Report.EndDate.Format "Jan 2, 2006" }}</p>
+    </div>
+    
+    <div class="report-content">
+        {{ .Report.Content }}
+    </div>
+{{ end }}
