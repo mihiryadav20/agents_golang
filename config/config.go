@@ -12,6 +12,10 @@ const (
 	RequestTokenURL = "https://trello.com/1/OAuthGetRequestToken"
 	AuthorizeURL    = "https://trello.com/1/OAuthAuthorizeToken"
 	AccessTokenURL  = "https://trello.com/1/OAuthGetAccessToken"
+	
+	// Mistral API configuration
+	MistralAPIKey   = "DDxlAmfVXmY3fSEvP0IeO57ebbUtkZmh"
+	MistralAPIURL   = "https://api.mistral.ai/v1"
 )
 
 // Store will hold all session data
