@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"html/template"
 	"log"
 	"net/http"
@@ -98,7 +99,15 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/dashboard", http.StatusTemporaryRedirect)
 }
 
-// DashboardHandler displays user information after successful OAuth
+// Board represents a Trello board structure
+type Board struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"desc"`
+	URL         string `json:"url"`
+}
+
+// DashboardHandler displays user information and boards after successful OAuth
 func DashboardHandler(w http.ResponseWriter, r *http.Request) {
 	// Check if the user is authenticated
 	session, _ := config.Store.Get(r, "trello-oauth")
@@ -117,7 +126,7 @@ func DashboardHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Make a request to get user information
-	resp, err := config.Consumer.Get(
+	userResp, err := config.Consumer.Get(
 		"https://api.trello.com/1/members/me",
 		map[string]string{},
 		token,
@@ -127,13 +136,36 @@ func DashboardHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error getting user information", http.StatusInternalServerError)
 		return
 	}
-	defer resp.Body.Close()
+	defer userResp.Body.Close()
 
-	// Render the dashboard template with token information
+	// Make a request to get user's boards
+	boardsResp, err := config.Consumer.Get(
+		"https://api.trello.com/1/members/me/boards",
+		map[string]string{"fields": "name,desc,url"},
+		token,
+	)
+	if err != nil {
+		log.Printf("Error getting boards: %v", err)
+		http.Error(w, "Error getting boards", http.StatusInternalServerError)
+		return
+	}
+	defer boardsResp.Body.Close()
+
+	// Parse the boards response
+	var boards []Board
+	decoder := json.NewDecoder(boardsResp.Body)
+	if err := decoder.Decode(&boards); err != nil {
+		log.Printf("Error decoding boards response: %v", err)
+		http.Error(w, "Error processing boards data", http.StatusInternalServerError)
+		return
+	}
+
+	// Render the dashboard template with token information and boards
 	data := map[string]interface{}{
 		"Title":        "Trello Dashboard",
 		"AccessToken":  accessToken,
 		"AccessSecret": accessSecret,
+		"Boards":       boards,
 	}
 	Templates["dashboard.html"].Execute(w, data)
 }
