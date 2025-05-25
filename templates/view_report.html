@@ -68,7 +68,10 @@
         }
     </style>
 
-    <a href="/reports?board_id={{ .Report.BoardID }}" class="back-link">← Back to Reports</a>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <a href="/reports?board_id={{ .Report.BoardID }}" class="back-link">← Back to Reports</a>
+        <a href="/download-report-pdf?id={{ .Report.ID }}" class="btn btn-primary" style="background-color: #0079BF; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Download PDF</a>
+    </div>
     
     <div class="report-header">
         <h1>
@@ -83,6 +86,6 @@
     </div>
     
     <div class="report-content">
-        {{ .Report.Content | safeHTML }}
+        {{ .Report.Content }}
     </div>
 {{ end }}

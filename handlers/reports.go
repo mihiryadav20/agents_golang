@@ -10,6 +10,7 @@ import (
 	"agents_go/config"
 	"agents_go/models"
 	"agents_go/services/agent"
+	"agents_go/services/pdf"
 
 	"github.com/mrjones/oauth"
 )
@@ -228,4 +229,77 @@ func ViewReportHandler(w http.ResponseWriter, r *http.Request) {
 		"Report": report,
 	}
 	Templates["view_report.html"].Execute(w, data)
+}
+
+// DownloadReportPDFHandler generates and serves a PDF version of a report
+func DownloadReportPDFHandler(w http.ResponseWriter, r *http.Request) {
+	// Check if the user is authenticated
+	session, _ := config.Store.Get(r, "trello-oauth")
+	accessToken, ok1 := session.Values["accessToken"].(string)
+	accessSecret, ok2 := session.Values["accessSecret"].(string)
+
+	if !ok1 || !ok2 {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// Get the report ID from the query parameters
+	reportID := r.URL.Query().Get("id")
+	if reportID == "" {
+		http.Error(w, "Missing report ID", http.StatusBadRequest)
+		return
+	}
+
+	// Create agent if not already created
+	var err error
+	if reportAgent == nil {
+		reportAgent, err = agent.NewAgent(accessToken, accessSecret, agent.ReportSchedule{
+			Weekly:  true,
+			Monthly: true,
+		})
+		if err != nil {
+			log.Printf("Error creating agent: %v", err)
+			http.Error(w, "Error creating agent", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// Get the report
+	report, err := reportAgent.GetReport(reportID)
+	if err != nil {
+		log.Printf("Error getting report: %v", err)
+		http.Error(w, "Report not found", http.StatusNotFound)
+		return
+	}
+
+	// Create PDF generator
+	pdfGenerator := pdf.NewGenerator()
+
+	// Generate PDF from report content
+	pdfBuffer, err := pdfGenerator.GenerateReport(
+		report.Content,
+		report.BoardName,
+		string(report.Type),
+		report.StartDate,
+		report.EndDate,
+	)
+	if err != nil {
+		log.Printf("Error generating PDF: %v", err)
+		http.Error(w, "Error generating PDF", http.StatusInternalServerError)
+		return
+	}
+
+	// Set response headers for PDF download
+	w.Header().Set("Content-Type", "application/pdf")
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s_%s_report_%s.pdf", 
+		report.BoardName,
+		report.Type,
+		report.GeneratedAt.Format("2006-01-02")))
+
+	// Write PDF buffer to response
+	if _, err := w.Write(pdfBuffer.Bytes()); err != nil {
+		log.Printf("Error writing PDF to response: %v", err)
+		http.Error(w, "Error serving PDF", http.StatusInternalServerError)
+		return
+	}
 }

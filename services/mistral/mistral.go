@@ -6,13 +6,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 	"time"
 
 	"agents_go/config"
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/html"
-	"github.com/gomarkdown/markdown/parser"
 )
 
 // Client is a Mistral API client
@@ -212,14 +208,8 @@ func (c *Client) GenerateReport(boardData map[string]interface{}, reportType str
 		return "", fmt.Errorf("no response from model")
 	}
 
-	// Get the generated message
-	response := chatResp.Choices[0].Message.Content
-
-	// Format the response for better presentation
-	formattedResponse := formatResponse(response)
-
-	// Return the formatted response
-	return formattedResponse, nil
+	// Get the generated message and return it directly
+	return chatResp.Choices[0].Message.Content, nil
 }
 
 // formatBoardData converts the board data to a readable format for the LLM
@@ -438,37 +428,7 @@ func formatBoardData(boardData map[string]interface{}) (string, error) {
 }
 
 // getReportSystemPrompt returns the system prompt for the specified report type
-// formatResponse formats the markdown response for better presentation
-func formatResponse(text string) string {
-	// Convert markdown to HTML for proper formatting
-	html := markdownToHTML(text)
-	
-	// Clean up any extra newlines or spacing issues
-	html = strings.ReplaceAll(html, "\n\n\n", "\n\n")
-	
-	// Add some basic styling to improve readability
-	html = "<div style='font-family: Arial, sans-serif; line-height: 1.6;'>" + html + "</div>"
-	
-	return html
-}
 
-// markdownToHTML converts markdown text to HTML
-func markdownToHTML(md string) string {
-	// Create markdown parser with extensions
-	extensions := parser.CommonExtensions | parser.AutoHeadingIDs | parser.NoEmptyLineBeforeBlock
-	p := parser.NewWithExtensions(extensions)
-	
-	// Parse markdown into AST
-	node := p.Parse([]byte(md))
-	
-	// Create HTML renderer with extensions
-	htmlFlags := html.CommonFlags | html.HrefTargetBlank
-	opts := html.RendererOptions{Flags: htmlFlags}
-	renderer := html.NewRenderer(opts)
-	
-	// Render HTML
-	return string(markdown.Render(node, renderer))
-}
 
 func getReportSystemPrompt(reportType string) string {
 	// Common preamble to set the stage for data input

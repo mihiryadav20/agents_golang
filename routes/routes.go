@@ -21,6 +21,7 @@ func SetupRoutes() *mux.Router {
 	r.HandleFunc("/reports", handlers.ReportsHandler).Methods("GET")
 	r.HandleFunc("/generate-report", handlers.GenerateReportHandler).Methods("POST")
 	r.HandleFunc("/view-report", handlers.ViewReportHandler).Methods("GET")
+	r.HandleFunc("/download-report-pdf", handlers.DownloadReportPDFHandler).Methods("GET")
 	
 	// Chat endpoint for testing the model
 	r.HandleFunc("/api/chat", handlers.ChatHandler).Methods("POST")
