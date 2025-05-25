@@ -429,7 +429,6 @@ func formatBoardData(boardData map[string]interface{}) (string, error) {
 
 // getReportSystemPrompt returns the system prompt for the specified report type
 
-
 func getReportSystemPrompt(reportType string) string {
 	// Common preamble to set the stage for data input
 	dataContextPreamble := "You will be provided with a structured summary of Trello board data. This may include card names, descriptions, current lists (statuses), assignees, due dates, labels, comments, and recent activity logs. Your analysis should be strictly based on this provided data.\n\n"
