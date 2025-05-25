@@ -14,9 +14,9 @@ const (
 	AccessTokenURL  = "https://trello.com/1/OAuthGetAccessToken"
 
 	// Mistral API configuration via OpenRouter
-	MistralAPIKey   = "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"
-	MistralAPIURL   = "https://openrouter.ai/api/v1"
-	MistralModel    = "mistralai/mistral-medium-3"
+	MistralAPIKey = "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"
+	MistralAPIURL = "https://openrouter.ai/api/v1"
+	MistralModel  = "mistralai/mistral-medium-3"
 )
 
 // Store will hold all session data

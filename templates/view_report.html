@@ -83,6 +83,6 @@
     </div>
     
     <div class="report-content">
-        {{ .Report.Content }}
+        {{ .Report.Content | safeHTML }}
     </div>
 {{ end }}
