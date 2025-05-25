@@ -14,7 +14,7 @@ const (
 	AccessTokenURL  = "https://trello.com/1/OAuthGetAccessToken"
 
 	// Mistral API configuration via OpenRouter
-	MistralAPIKey = "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"
+	MistralAPIKey = "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"
 	MistralAPIURL = "https://openrouter.ai/api/v1"
 	MistralModel  = "mistralai/mistral-medium-3"
 )
