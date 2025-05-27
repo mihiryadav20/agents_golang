@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"agents_go/models"
-	"agents_go/services/mistral"
+	"agents_go/services/aifoundry"
 	"agents_go/services/trello"
 )
 
@@ -19,20 +19,20 @@ type ReportSchedule struct {
 
 // Agent handles the scheduled generation of reports
 type Agent struct {
-	trelloClient  *trello.Client
-	mistralClient *mistral.Client
-	reportStore   *models.ReportStore
-	schedule      ReportSchedule
-	stop          chan struct{}
-	wg            sync.WaitGroup
-	running       bool
-	mutex         sync.Mutex
+	trelloClient   *trello.Client
+	aifoundryClient *aifoundry.Client
+	reportStore    *models.ReportStore
+	schedule       ReportSchedule
+	stop           chan struct{}
+	wg             sync.WaitGroup
+	running        bool
+	mutex          sync.Mutex
 }
 
 // NewAgent creates a new agent
 func NewAgent(accessToken, accessSecret string, schedule ReportSchedule) (*Agent, error) {
 	trelloClient := trello.NewClient(accessToken, accessSecret)
-	mistralClient := mistral.NewClient()
+	aifoundryClient := aifoundry.NewClient()
 
 	reportStore, err := models.NewReportStore("./data/reports")
 	if err != nil {
@@ -40,11 +40,11 @@ func NewAgent(accessToken, accessSecret string, schedule ReportSchedule) (*Agent
 	}
 
 	return &Agent{
-		trelloClient:  trelloClient,
-		mistralClient: mistralClient,
-		reportStore:   reportStore,
-		schedule:      schedule,
-		stop:          make(chan struct{}),
+		trelloClient:   trelloClient,
+		aifoundryClient: aifoundryClient,
+		reportStore:    reportStore,
+		schedule:       schedule,
+		stop:           make(chan struct{}),
 	}, nil
 }
 
@@ -173,8 +173,8 @@ func (a *Agent) generateReport(boardID, boardName string, reportType models.Repo
 		return
 	}
 
-	// Generate report using Mistral
-	reportContent, err := a.mistralClient.GenerateReport(boardData, string(reportType))
+	// Generate report using AI Foundry
+	reportContent, err := a.aifoundryClient.GenerateReport(boardData, string(reportType))
 	if err != nil {
 		log.Printf("Error generating report: %v", err)
 		return
@@ -225,8 +225,8 @@ func (a *Agent) GenerateReportOnDemand(boardID string, reportType models.ReportT
 		return nil, fmt.Errorf("error getting board data: %v", err)
 	}
 
-	// Generate report using Mistral
-	reportContent, err := a.mistralClient.GenerateReport(boardData, string(reportType))
+	// Generate report using AI Foundry
+	reportContent, err := a.aifoundryClient.GenerateReport(boardData, string(reportType))
 	if err != nil {
 		return nil, fmt.Errorf("error generating report: %v", err)
 	}

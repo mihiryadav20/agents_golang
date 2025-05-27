@@ -13,10 +13,16 @@ const (
 	AuthorizeURL    = "https://trello.com/1/OAuthAuthorizeToken"
 	AccessTokenURL  = "https://trello.com/1/OAuthGetAccessToken"
 
-	// Mistral API configuration via OpenRouter
-	MistralAPIKey = "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"
-	MistralAPIURL = "https://openrouter.ai/api/v1"
-	MistralModel  = "mistralai/mistral-medium-3"
+	// AI Foundry API configuration
+	AIFoundryAPIKey = "5A0S6uhOLsoYHEwSnTzsB9UhNo6WSjE6OCwePK1ze4mhc5soCiKCJQQJ99BEACHYHv6XJ3w3AAAAACOGtT4T"
+	AIFoundryAPIURL = "https://mihiryadav00-4718-resource.services.ai.azure.com/models"
+	AIFoundryModel  = "Llama-4-Maverick-17B-128E-Instruct-FP8"
+	AIFoundryAPIVersion = "2024-05-01-preview"
+
+	// Mistral API configuration
+	MistralAPIKey = "DDxlAmfVXmY3fSEvP0IeO57ebbUtkZmh"
+	MistralAPIURL = "https://api.mistral.ai/v1"
+	MistralModel  = "mistral-medium"
 )
 
 // Store will hold all session data

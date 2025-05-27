@@ -1,11 +1,10 @@
 package handlers
 
 import (
+	"agents_go/services/aifoundry"
 	"encoding/json"
 	"log"
 	"net/http"
-
-	"agents_go/services/mistral"
 )
 
 // ChatRequest represents a request to the chat endpoint
@@ -44,8 +43,7 @@ func ChatHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create Mistral client
-	client := mistral.NewClient()
-
+	client := aifoundry.NewClient()
 	// Send message to Mistral
 	response, err := client.SendChatMessage(chatReq.Message)
 	if err != nil {
