@@ -14,15 +14,10 @@ const (
 	AccessTokenURL  = "https://trello.com/1/OAuthGetAccessToken"
 
 	// AI Foundry API configuration
-	AIFoundryAPIKey = "5A0S6uhOLsoYHEwSnTzsB9UhNo6WSjE6OCwePK1ze4mhc5soCiKCJQQJ99BEACHYHv6XJ3w3AAAAACOGtT4T"
-	AIFoundryAPIURL = "https://mihiryadav00-4718-resource.services.ai.azure.com/models"
-	AIFoundryModel  = "Llama-4-Maverick-17B-128E-Instruct-FP8"
+	AIFoundryAPIKey     = "5A0S6uhOLsoYHEwSnTzsB9UhNo6WSjE6OCwePK1ze4mhc5soCiKCJQQJ99BEACHYHv6XJ3w3AAAAACOGtT4T"
+	AIFoundryAPIURL     = "https://mihiryadav00-4718-resource.services.ai.azure.com/models"
+	AIFoundryModel      = "Llama-4-Maverick-17B-128E-Instruct-FP8"
 	AIFoundryAPIVersion = "2024-05-01-preview"
-
-	// Mistral API configuration
-	MistralAPIKey = "DDxlAmfVXmY3fSEvP0IeO57ebbUtkZmh"
-	MistralAPIURL = "https://api.mistral.ai/v1"
-	MistralModel  = "mistral-medium"
 )
 
 // Store will hold all session data
@@ -50,5 +45,5 @@ func Init() {
 	// Request token to never expire
 	Consumer.AdditionalAuthorizationUrlParams["expiration"] = "never"
 	// Set the app name
-	Consumer.AdditionalAuthorizationUrlParams["name"] = "Trello OAuth Go App"
+	Consumer.AdditionalAuthorizationUrlParams["name"] = "Trello AI Foundry Integration"
 }

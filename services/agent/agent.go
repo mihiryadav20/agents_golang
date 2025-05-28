@@ -20,7 +20,7 @@ type ReportSchedule struct {
 // Agent handles the scheduled generation of reports
 type Agent struct {
 	trelloClient   *trello.Client
-	aifoundryClient *aifoundry.Client
+	aifoundryClient *aifoundry.AIFoundryClient
 	reportStore    *models.ReportStore
 	schedule       ReportSchedule
 	stop           chan struct{}
